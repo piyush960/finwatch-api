@@ -5,4 +5,4 @@ SQLAlchemy
 scikit-learn
 psycopg2
 twilio
-dotenv
+python-dotenv
