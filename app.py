@@ -167,6 +167,20 @@ def getAnomaliesCount():
     print(json)
     return jsonify(json)
 
+@app.route('/get-snac-countries', methods=['GET'])
+def getSancCountries():
+    username = os.getenv('AIVEN_USERNAME')
+    password = os.getenv('AIVEN_PASSWORD')
+    database = os.getenv('AIVEN_DATABASE')
+
+    engine = create_engine(f'postgresql://{username}:{password}@anomaly-detection-anomaly-detection.a.aivencloud.com:18261/{database}?sslmode=require')
+    query = """
+        SELECT country_name FROM sanctioned_countries
+    """
+    df = pd.read_sql_query(query, engine)
+    restricted_countries = df['country_name'].str.strip().tolist()
+    return jsonify({"countries" : restricted_countries})
+
 
 
 if __name__ == '__main__':
